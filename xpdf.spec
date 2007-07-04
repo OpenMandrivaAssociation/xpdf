@@ -138,7 +138,7 @@ make install DESTDIR=$CURRENTDIR/freetype2-local \
 %endif
 
 # build xpdf
-autoconf-2.5x
+autoconf
 export X_EXTRA_LIBS="-lXft -lXrender -lfontconfig -lz"
 %configure2_5x --with-gzip \
 	   --bindir=%{_bindir} \
