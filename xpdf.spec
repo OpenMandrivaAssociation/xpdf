@@ -11,7 +11,7 @@
 Summary:	A PDF file viewer for the X Window System
 Name:		xpdf
 Version:	%{pkgversion}
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPL
 Source:		ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{fversion}.tar.bz2
 Source1:	icons-%{name}.tar.bz2
@@ -45,6 +45,7 @@ Patch18:	%{name}-3.00-gcc401.patch
 Patch19:	%{name}-3.01-core.patch
 Patch20:	%{name}-3.01-crash.patch
 Patch21:	%{name}-3.01-xfont.patch
+Patch22:	%{name}-3.02pl1.patch
 #
 URL:		http://www.foolabs.com/xpdf/
 Group:		Office
@@ -101,6 +102,7 @@ This contains the command line tools from the Xpdf distribution.
 %patch19 -p1 -b .core
 %patch20 -p1 -b .crash
 %patch21 -p1 -b .xfont
+%patch22 -p1 -b .CVE-2007-3387
 
 %build
 CURRENTDIR=`pwd`
