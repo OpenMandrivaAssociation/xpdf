@@ -11,7 +11,7 @@
 Summary:	A PDF file viewer for the X Window System
 Name:		xpdf
 Version:	%{pkgversion}
-Release:	%mkrel 3
+Release:	%mkrel 4
 License:	GPL
 Source:		ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{fversion}.tar.bz2
 Source1:	icons-%{name}.tar.bz2
@@ -212,7 +212,7 @@ cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}.desktop << EOF
 Encoding=UTF-8
 Name=Xpdf
 Comment=Views PDF files
-Exec=%_bindir/xpdf %u
+Exec=%_bindir/xpdf %f
 Icon=%name
 Terminal=false
 Type=Application
