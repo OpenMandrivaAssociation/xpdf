@@ -11,7 +11,7 @@
 Summary:	A PDF file viewer for the X Window System
 Name:		xpdf
 Version:	%{pkgversion}
-Release:	%mkrel 4
+Release:	%mkrel 5
 License:	GPL
 Source:		ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{fversion}.tar.bz2
 Source1:	icons-%{name}.tar.bz2
@@ -63,6 +63,9 @@ BuildRequires:	lesstif-devel
 %endif
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 Requires:	urw-fonts
+# Lesstiff user interface requires these (btw, why a static lesstif and freetype?)
+Requires:	x11-font-adobe-75dpi
+Requires:	x11-font-adobe-100dpi
 
 %description
 Xpdf is an X Window System based viewer for Portable Document Format (PDF)
