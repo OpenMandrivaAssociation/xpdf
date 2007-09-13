@@ -11,7 +11,7 @@
 Summary:	A PDF file viewer for the X Window System
 Name:		xpdf
 Version:	%{pkgversion}
-Release:	%mkrel 6
+Release:	%mkrel 7
 License:	GPL
 Source:		ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{fversion}.tar.bz2
 Source1:	icons-%{name}.tar.bz2
@@ -54,7 +54,7 @@ BuildRequires:	xpm-devel
 BuildRequires:	t1lib-devel
 BuildRequires:	freetype2-devel >= 2.0.5
 BuildConflicts:	libpaper-devel
-BuildRequires: autoconf2.5
+BuildRequires: autoconf
 %if %build_lesstif
 BuildRequires:	libfontconfig-devel
 BuildConflicts:	lesstif-devel
@@ -66,6 +66,7 @@ Requires:	urw-fonts
 # Lesstiff user interface requires these (btw, why a static lesstif and freetype?)
 Requires:	x11-font-adobe-75dpi
 Requires:	x11-font-adobe-100dpi
+Requires:	%name-common = %version-%release
 
 %description
 Xpdf is an X Window System based viewer for Portable Document Format (PDF)
@@ -85,6 +86,20 @@ files. PDF files are sometimes called Acrobat files, after Adobe Acrobat
 standard X fonts.
 
 This contains the command line tools from the Xpdf distribution.
+
+%package common
+Group: Text tools
+Summary:	common files for xpdf and the applications based on it
+Conflicts:	xpdf < 3.0.2-7
+
+%description common
+Xpdf is an X Window System based viewer for Portable Document Format (PDF)
+files. PDF files are sometimes called Acrobat files, after Adobe Acrobat
+(Adobe's PDF viewer).  Xpdf is a small and efficient program which uses
+standard X fonts.
+
+This package contains common files (such as UnicodeMap and xpdfrc) needed for
+xpdf and the applications based on it.
 
 %prep
 %setup -q -a2 -a3 -a4 -a5 -a6 -a7 -a8 -a9 -a10 -a11 -a12 -a13 -a14 -n %{name}-%{fversion}
@@ -190,7 +205,6 @@ perl -pi -e 's/^#urlCommand.*/urlCommand "www-browser %s"/' doc/sample-xpdfrc
 rm -rf %{buildroot}
 install -d %{buildroot}%{_bindir}
 install -d %{buildroot}%{_mandir}/man1
-install -d %{buildroot}%{_menudir}
 make DESTDIR=%{buildroot} install
 for i in chinese-simplified chinese-traditional cyrillic japanese \
 	korean thai greek latin2 turkish hebrew arabic; \
@@ -198,16 +212,6 @@ for i in chinese-simplified chinese-traditional cyrillic japanese \
 		mkdir -p %{buildroot}%{_datadir}/%{name}/$i
 		cp -a xpdf-$i/* %{buildroot}%{_datadir}/%{name}/$i/
 	done
-
-cat > %{buildroot}%{_menudir}/xpdf <<EOF
-?package(xpdf): command="xpdf" needs="X11" \
-icon="xpdf.png" section="Office/Publishing" title="Xpdf" \
-mimetypes="text/pdf;text/x-pdf;application/pdf;application/x-pdf" \
-%if %{mdkversion} >= 200610
-xdg=true \
-%endif
-longtitle="Views PDF files"
-EOF
 
 install -m 755 -d $RPM_BUILD_ROOT%{_datadir}/applications/
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}.desktop << EOF
@@ -240,16 +244,17 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc CHANGES README
-%dir %{_datadir}/%{name}
 %{_bindir}/xpdf
 %{_mandir}/man1/xpdf.1*
-%{_mandir}/man5/*
 %{_datadir}/applications/mandriva-%{name}.desktop
-%{_menudir}/*
 %{_iconsdir}/*.*
 %{_liconsdir}/*.*
 %{_miconsdir}/*.*
-%{_datadir}/%{name}/*
+
+%files common
+%defattr(-,root,root)
+%{_datadir}/%{name}
+%{_mandir}/man5/*
 %config(noreplace) %{_sysconfdir}/xpdfrc
 
 %files tools
@@ -257,5 +262,3 @@ rm -rf %{buildroot}
 %doc CHANGES README
 %{_bindir}/pdf*
 %{_mandir}/man1/pdf*
-
-
