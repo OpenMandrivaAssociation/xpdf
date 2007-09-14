@@ -11,7 +11,7 @@
 Summary:	A PDF file viewer for the X Window System
 Name:		xpdf
 Version:	%{pkgversion}
-Release:	%mkrel 7
+Release:	%mkrel 8
 License:	GPL
 Source:		ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{fversion}.tar.bz2
 Source1:	icons-%{name}.tar.bz2
@@ -90,7 +90,7 @@ This contains the command line tools from the Xpdf distribution.
 %package common
 Group: Text tools
 Summary:	common files for xpdf and the applications based on it
-Conflicts:	xpdf < 3.0.2-7
+Conflicts:	xpdf < 3.02-7
 
 %description common
 Xpdf is an X Window System based viewer for Portable Document Format (PDF)
