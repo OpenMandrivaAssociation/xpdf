@@ -49,7 +49,7 @@ Patch22:	%{name}-3.02pl1.patch
 #
 URL:		http://www.foolabs.com/xpdf/
 Group:		Office
-BuildRequires:	XFree86-devel
+BuildRequires:	X11-devel
 BuildRequires:	xpm-devel
 BuildRequires:	t1lib-devel
 BuildRequires:	freetype2-devel >= 2.0.5
