@@ -62,6 +62,7 @@ BuildConflicts:	lesstif-devel
 %else
 BuildRequires:	lesstif-devel
 %endif
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 Requires:	urw-fonts
 # Lesstiff user interface requires these (btw, why a static lesstif and freetype?)
 Requires:	x11-font-adobe-75dpi
