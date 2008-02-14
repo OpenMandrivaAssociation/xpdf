@@ -90,7 +90,7 @@ This contains the command line tools from the Xpdf distribution.
 
 %package common
 Group: Text tools
-Summary:	common files for xpdf and the applications based on it
+Summary:	Common files for xpdf and the applications based on it
 Conflicts:	xpdf < 3.02-7
 
 %description common
