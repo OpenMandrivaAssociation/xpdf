@@ -11,7 +11,7 @@
 Summary:	A PDF file viewer for the X Window System
 Name:		xpdf
 Version:	%{pkgversion}
-Release:	%mkrel 9
+Release:	%mkrel 10
 License:	GPLv2+
 Source:		ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{fversion}.tar.bz2
 Source1:	icons-%{name}.tar.bz2
@@ -74,19 +74,6 @@ Xpdf is an X Window System based viewer for Portable Document Format (PDF)
 files. PDF files are sometimes called Acrobat files, after Adobe Acrobat
 (Adobe's PDF viewer).  Xpdf is a small and efficient program which uses
 standard X fonts.
-
-%package tools
-Group: Text tools
-Summary:	PDF command line tools
-Conflicts:	xpdf < 3.01pl2-2mdk
-
-%description tools
-Xpdf is an X Window System based viewer for Portable Document Format (PDF)
-files. PDF files are sometimes called Acrobat files, after Adobe Acrobat
-(Adobe's PDF viewer).  Xpdf is a small and efficient program which uses
-standard X fonts.
-
-This contains the command line tools from the Xpdf distribution.
 
 %package common
 Group: Text tools
@@ -233,6 +220,9 @@ EOF
 install -d %{buildroot}%{_iconsdir}
 tar xjf %SOURCE1 -C %{buildroot}%{_iconsdir}
 
+# remove unpackaged files
+rm -f %{buildroot}%{_bindir}/pdf* %{buildroot}%{_mandir}/man1/pdf*
+
 %post
 %update_menus
 
@@ -258,8 +248,3 @@ rm -rf %{buildroot}
 %{_mandir}/man5/*
 %config(noreplace) %{_sysconfdir}/xpdfrc
 
-%files tools
-%defattr(-,root,root)
-%doc CHANGES README
-%{_bindir}/pdf*
-%{_mandir}/man1/pdf*
