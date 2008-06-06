@@ -13,7 +13,7 @@ Name:		xpdf
 Version:	%{pkgversion}
 Release:	%mkrel 11
 License:	GPLv2+
-Source:		ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{fversion}.tar.bz2i
+Source:		ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{fversion}.tar.bz2
 Source1:	icons-%{name}.tar.bz2
 Source2:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-chinese-simplified.tar.bz2
 Source3:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-chinese-traditional.tar.bz2
