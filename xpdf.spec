@@ -223,11 +223,15 @@ tar xjf %SOURCE1 -C %{buildroot}%{_iconsdir}
 # remove unpackaged files
 rm -f %{buildroot}%{_bindir}/pdf* %{buildroot}%{_mandir}/man1/pdf*
 
+%if %mdkversion < 200900
 %post
 %update_menus
+%endif
 
+%if %mdkversion < 200900
 %postun
 %clean_menus
+%endif
 
 %clean
 rm -rf %{buildroot}
