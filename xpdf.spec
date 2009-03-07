@@ -11,7 +11,7 @@
 Summary:	A PDF file viewer for the X Window System
 Name:		xpdf
 Version:	%{pkgversion}
-Release:	%mkrel 12
+Release:	%mkrel 13
 License:	GPLv2+
 Source:		ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{fversion}.tar.bz2
 Source1:	icons-%{name}.tar.bz2
