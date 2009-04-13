@@ -43,7 +43,7 @@ Patch16:	%{name}-chinese.patch
 Patch17:	%{name}-3.02-CAN-2005-0206.patch
 Patch18:	%{name}-3.00-gcc401.patch
 Patch19:	%{name}-3.01-core.patch
-Patch20:	%{name}-3.01-crash.patch
+Patch20:	%{name}-3.02-crash.patch
 Patch21:	%{name}-3.01-xfont.patch
 Patch22:	%{name}-3.02pl1.patch
 Patch23:	%{name}-3.02-CVE-2007-4352_5392_5393.patch
