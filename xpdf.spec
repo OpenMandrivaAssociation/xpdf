@@ -117,7 +117,6 @@ CURRENTDIR=`pwd`
 # build a local lesstif library
 %if %build_lesstif
 (cd lesstif-%{lesstifver}
-libtoolize -c -f
 CFLAGS="$RPM_OPT_FLAGS" \
 	./configure \
 			--prefix=%{x11dir} \
@@ -147,7 +146,6 @@ make install DESTDIR=$CURRENTDIR/freetype2-local \
 %endif
 
 # build xpdf
-autoconf
 export X_EXTRA_LIBS="-lXft -lXrender -lfontconfig -lz"
 %configure2_5x --with-gzip \
 	   --bindir=%{_bindir} \
