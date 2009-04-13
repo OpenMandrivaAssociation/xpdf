@@ -38,7 +38,7 @@ Patch6:		%{name}-2.03-zoom.patch
 Patch9:		%{name}-2.03-ft215deb.patch
 #
 Patch10:	%{name}-3.01-xpdfrc3.patch
-Patch11:	%{name}-3.00-pdftoppm.patch
+Patch11:	%{name}-3.02-pdftoppm.patch
 Patch16:	%{name}-chinese.patch
 Patch17:	%{name}-3.02-CAN-2005-0206.patch
 Patch18:	%{name}-3.00-gcc401.patch
@@ -110,6 +110,7 @@ xpdf and the applications based on it.
 %patch21 -p1 -b .xfont
 %patch22 -p1 -b .CVE-2007-3387
 %patch23 -p1 -b .cve-2007-4352_5392_5393
+
 %build
 CURRENTDIR=`pwd`
 
