@@ -46,7 +46,8 @@ Patch19:	%{name}-3.01-core.patch
 Patch20:	%{name}-3.02-crash.patch
 Patch21:	%{name}-3.01-xfont.patch
 Patch22:	%{name}-3.02pl1.patch
-Patch23:	%{name}-3.02-CVE-2007-4352_5392_5393.patch
+Patch23:	%{name}-3.02pl2.patch
+Patch24:	%{name}-3.02pl3.patch
 #
 URL:		http://www.foolabs.com/xpdf/
 Group:		Office
@@ -110,6 +111,7 @@ xpdf and the applications based on it.
 %patch21 -p1 -b .xfont
 %patch22 -p1 -b .CVE-2007-3387
 %patch23 -p1 -b .cve-2007-4352_5392_5393
+%patch24 -p1 -b .CVE-2009-0195
 
 %build
 CURRENTDIR=`pwd`
