@@ -11,7 +11,7 @@
 Summary:	A PDF file viewer for the X Window System
 Name:		xpdf
 Version:	%{pkgversion}
-Release:	%mkrel 15
+Release:	%mkrel 16
 License:	GPLv2+
 Source:		ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{fversion}.tar.bz2
 Source1:	icons-%{name}.tar.bz2
@@ -48,6 +48,7 @@ Patch21:	%{name}-3.01-xfont.patch
 Patch22:	%{name}-3.02pl1.patch
 Patch23:	%{name}-3.02pl2.patch
 Patch24:	%{name}-3.02pl3.patch
+Patch25:	xpdf-3.02pl4.patch
 #
 URL:		http://www.foolabs.com/xpdf/
 Group:		Office
@@ -112,6 +113,7 @@ xpdf and the applications based on it.
 %patch22 -p1 -b .CVE-2007-3387
 %patch23 -p1 -b .cve-2007-4352_5392_5393
 %patch24 -p1 -b .CVE-2009-0195
+%patch25 -p1 -b .CVE-2009-3603,3604,3605,3606,3608,3609
 
 %build
 CURRENTDIR=`pwd`
