@@ -15,7 +15,7 @@
 Summary:	A PDF file viewer for the X Window System
 Name:		xpdf
 Version:	%{pkgversion}
-Release:	%mkrel 17
+Release:	%mkrel 18
 License:	GPLv2+
 Source:		ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{fversion}.tar.bz2
 Source1:	icons-%{name}.tar.bz2
@@ -261,6 +261,8 @@ rm -f %{buildroot}%{_bindir}/pdf* %{buildroot}%{_mandir}/man1/pdf*
 # install headers
 install -d %{buildroot}%{_includedir}/%{name}
 install -m0644 xpdf/*.h %{buildroot}%{_includedir}/%{name}/
+install -m0644 aconf.h %{buildroot}%{_includedir}/%{name}/
+install -m0644 aconf2.h %{buildroot}%{_includedir}/%{name}/
 
 for i in fofi goo splash; do
     install -d %{buildroot}%{_includedir}/%{name}/$i
