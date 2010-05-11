@@ -1,8 +1,12 @@
+%define	major 0
+%define libname %mklibname xpdf %{major}
+%define develname %mklibname xpdf -d
+
 %define urwdir %{_datadir}/fonts/default/Type1
 %define lesstifver	0.93.41
 %define freetypever	2.1.5
 %define x11dir		/usr/X11R6
-%define build_lesstif	1
+%define build_lesstif	0
 %define build_freetype2	0
 %define usefreetype2	1
 %define	pkgversion	3.02
@@ -11,7 +15,7 @@
 Summary:	A PDF file viewer for the X Window System
 Name:		xpdf
 Version:	%{pkgversion}
-Release:	%mkrel 16
+Release:	%mkrel 17
 License:	GPLv2+
 Source:		ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{fversion}.tar.bz2
 Source1:	icons-%{name}.tar.bz2
@@ -29,6 +33,7 @@ Source12:	ftp://ftp.hungry.com/pub/hungry/lesstif/srcdist/lesstif-%{lesstifver}.
 Source13:	ftp://ftp.freetype.org/freetype/freetype2/freetype-%{freetypever}.tar.bz2
 Source14:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-arabic.tar.bz2
 
+Patch0:		xpdf-3.02-shared.diff
 Patch2:		%{name}-3.01-antihigh.patch
 Patch3:		%{name}-3.02-mozilla.patch
 Patch4:		%{name}-3.00-autohinting.patch
@@ -38,7 +43,6 @@ Patch6:		%{name}-2.03-zoom.patch
 Patch9:		%{name}-2.03-ft215deb.patch
 #
 Patch10:	%{name}-3.01-xpdfrc3.patch
-Patch11:	%{name}-3.02-pdftoppm.patch
 Patch16:	%{name}-chinese.patch
 Patch17:	%{name}-3.02-CAN-2005-0206.patch
 Patch18:	%{name}-3.00-gcc401.patch
@@ -57,19 +61,20 @@ BuildRequires:	xpm-devel
 BuildRequires:	t1lib-devel
 BuildRequires:	freetype2-devel >= 2.0.5
 BuildConflicts:	libpaper-devel
-BuildRequires: autoconf
+BuildRequires:	autoconf
+BuildRequires:	libtool
 %if %build_lesstif
 BuildRequires:	libfontconfig-devel
 BuildConflicts:	lesstif-devel
 %else
 BuildRequires:	lesstif-devel
 %endif
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 Requires:	urw-fonts
 # Lesstiff user interface requires these (btw, why a static lesstif and freetype?)
 Requires:	x11-font-adobe-75dpi
 Requires:	x11-font-adobe-100dpi
-Requires:	%name-common = %version-%release
+Requires:	%{name}-common >= %{version}-%{release}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Xpdf is an X Window System based viewer for Portable Document Format (PDF)
@@ -77,12 +82,37 @@ files. PDF files are sometimes called Acrobat files, after Adobe Acrobat
 (Adobe's PDF viewer).  Xpdf is a small and efficient program which uses
 standard X fonts.
 
-%package common
-Group: Text tools
+%package -n	%{libname}
+Summary:	Shared Xpdf library
+Group:          System/Libraries
+
+%description -n	%{libname}
+Xpdf is an X Window System based viewer for Portable Document Format (PDF)
+files. PDF files are sometimes called Acrobat files, after Adobe Acrobat
+(Adobe's PDF viewer).  Xpdf is a small and efficient program which uses
+standard X fonts.
+
+%package -n	%{develname}
+Summary:	Development files for the Xpdf library
+Group:		Development/C++
+Provides:	%{name}-devel
+Provides:	lib%{name}-devel
+Requires:	%{libname} >= %{version}
+
+%description -n	%{develname}
+Xpdf is an X Window System based viewer for Portable Document Format (PDF)
+files. PDF files are sometimes called Acrobat files, after Adobe Acrobat
+(Adobe's PDF viewer).  Xpdf is a small and efficient program which uses
+standard X fonts.
+
+This package contains the development files for Xpdf.
+
+%package	common
+Group:		Text tools
 Summary:	Common files for xpdf and the applications based on it
 Conflicts:	xpdf < 3.02-7
 
-%description common
+%description	common
 Xpdf is an X Window System based viewer for Portable Document Format (PDF)
 files. PDF files are sometimes called Acrobat files, after Adobe Acrobat
 (Adobe's PDF viewer).  Xpdf is a small and efficient program which uses
@@ -92,8 +122,9 @@ This package contains common files (such as UnicodeMap and xpdfrc) needed for
 xpdf and the applications based on it.
 
 %prep
-%setup -q -a2 -a3 -a4 -a5 -a6 -a7 -a8 -a9 -a10 -a11 -a12 -a13 -a14 -n %{name}-%{fversion}
 
+%setup -q -a2 -a3 -a4 -a5 -a6 -a7 -a8 -a9 -a10 -a11 -a12 -a13 -a14 -n %{name}-%{fversion}
+%patch0 -p1 -b .shared
 %patch2 -p1 -b .antihigh
 %patch3 -p1 -b .mozilla
 %patch4 -p1 -b .autohint
@@ -103,7 +134,6 @@ xpdf and the applications based on it.
 %patch9 -p1 -b .deb
 %endif
 %patch10 -p1 -b .30
-%patch11 -p1 -b .ppm
 %patch16 -p1 -b .chinese
 %patch17 -p1 -b .CAN-2005-0206
 %patch18 -p1 -b .gcc401
@@ -173,7 +203,7 @@ export X_EXTRA_LIBS="-lXft -lXrender -lfontconfig -lz"
 	   --enable-chinese-gb \
 	   --enable-chinese-cns
 
-make all
+%make
 
 perl -pi -e 's@/usr/local/etc/@%{_sysconfdir}/@' doc/*.1 doc/*.5
 perl -pi -e 's@/usr/local/share/ghostscript/fonts@%{urwdir}@' doc/sample-xpdfrc doc/*.1 doc/*.5
@@ -194,9 +224,12 @@ perl -pi -e 's/^#urlCommand.*/urlCommand "www-browser %s"/' doc/sample-xpdfrc
 
 %install
 rm -rf %{buildroot}
+
 install -d %{buildroot}%{_bindir}
 install -d %{buildroot}%{_mandir}/man1
-make DESTDIR=%{buildroot} install
+
+%makeinstall_std
+
 for i in chinese-simplified chinese-traditional cyrillic japanese \
 	korean thai greek latin2 turkish hebrew arabic; \
 	do
@@ -218,13 +251,21 @@ MimeType=text/pdf;text/x-pdf;application/pdf;application/x-pdf;
 Categories=X-MandrivaLinux-Office-Publishing;Office;Viewer;
 EOF
 
-
 # mdk icons
 install -d %{buildroot}%{_iconsdir}
 tar xjf %SOURCE1 -C %{buildroot}%{_iconsdir}
 
 # remove unpackaged files
 rm -f %{buildroot}%{_bindir}/pdf* %{buildroot}%{_mandir}/man1/pdf*
+
+# install headers
+install -d %{buildroot}%{_includedir}/%{name}
+install -m0644 xpdf/*.h %{buildroot}%{_includedir}/%{name}/
+
+for i in fofi goo splash; do
+    install -d %{buildroot}%{_includedir}/%{name}/$i
+    install -m0644 $i/*.h %{buildroot}%{_includedir}/%{name}/$i/
+done
 
 %if %mdkversion < 200900
 %post
@@ -236,12 +277,30 @@ rm -f %{buildroot}%{_bindir}/pdf* %{buildroot}%{_mandir}/man1/pdf*
 %clean_menus
 %endif
 
+%if %mdkversion < 200900
+%post -n %{libname} -p /sbin/ldconfig
+%endif
+
+%if %mdkversion < 200900
+%postun -n %{libname} -p /sbin/ldconfig
+%endif
+
 %clean
 rm -rf %{buildroot}
 
-%files
+%files -n %{libname}
 %defattr(-,root,root)
 %doc CHANGES README
+%{_libdir}/libxpdf.so.%{major}*
+
+%files -n %{develname}
+%defattr(-,root,root)
+%{_includedir}/%{name}
+%{_libdir}/*.so
+%{_libdir}/*.*a
+
+%files
+%defattr(-,root,root)
 %{_bindir}/xpdf
 %{_mandir}/man1/xpdf.1*
 %{_datadir}/applications/mandriva-%{name}.desktop
@@ -254,4 +313,3 @@ rm -rf %{buildroot}
 %{_datadir}/%{name}
 %{_mandir}/man5/*
 %config(noreplace) %{_sysconfdir}/xpdfrc
-
