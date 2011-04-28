@@ -9,13 +9,13 @@
 %define build_lesstif	0
 %define build_freetype2	0
 %define usefreetype2	1
-%define	pkgversion	3.02
+%define	pkgversion	3.02pl6
 %define fversion	3.02
 
 Summary:	A PDF file viewer for the X Window System
 Name:		xpdf
 Version:	%{pkgversion}
-Release:	%mkrel 18
+Release:	%mkrel 1
 License:	GPLv2+
 Source:		ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{fversion}.tar.bz2
 Source1:	icons-%{name}.tar.bz2
@@ -53,12 +53,12 @@ Patch22:	%{name}-3.02pl1.patch
 Patch23:	%{name}-3.02pl2.patch
 Patch24:	%{name}-3.02pl3.patch
 Patch25:	xpdf-3.02pl4.patch
+Patch26:	xpdf-3.02pl5.patch
 #
 URL:		http://www.foolabs.com/xpdf/
 Group:		Office
 BuildRequires:	X11-devel
 BuildRequires:	xpm-devel
-BuildRequires:	t1lib-devel
 BuildRequires:	freetype2-devel >= 2.0.5
 BuildConflicts:	libpaper-devel
 BuildRequires:	autoconf
@@ -144,6 +144,7 @@ xpdf and the applications based on it.
 %patch23 -p1 -b .cve-2007-4352_5392_5393
 %patch24 -p1 -b .CVE-2009-0195
 %patch25 -p1 -b .CVE-2009-3603,3604,3605,3606,3608,3609
+%patch26 -p1 -b .pl5
 
 %build
 CURRENTDIR=`pwd`
@@ -162,6 +163,7 @@ CFLAGS="$RPM_OPT_FLAGS" \
 			--enable-build-21 \
 			--enable-default-21 \
 			--disable-maintainer-mode \
+			--with-t1-library=no \
 			--disable-debug
 %make
 make install \
