@@ -1,0 +1,16 @@
+sources:
+  "freetype-2.1.5.tar.bz2:"	4cee0581671928f7e721206ef1d4e9f9d37f0faa
+  "icons-xpdf.tar.bz2:"	a844c0076cb9c59ab2f2949ec5468b2a58de9943
+  "lesstif-0.93.41.tar.bz2:"	505f6670b2e1c5c03556b4cc4cbc347f56c960a5
+  "xpdf-3.02.tar.bz2:"	d55d6661c1ed89e74cb37808e952b9b5cf490123
+  "xpdf-arabic.tar.bz2:"	0915d5def3885465aba0b03d55d45b6d609781b0
+  "xpdf-chinese-simplified.tar.bz2:"	c84bd7ab562ff974ffa27d943f3fcd719d829ac6
+  "xpdf-chinese-traditional.tar.bz2:"	a40e68bb0bb35a16275e093043115842688350e3
+  "xpdf-cyrillic.tar.bz2:"	b8b0358a954df76dc2fb3a2e011d676f653fd93c
+  "xpdf-greek.tar.bz2:"	b5fd604d28c5653fd1226dee0eb119947b32150a
+  "xpdf-hebrew.tar.bz2:"	8f604ec0b740bc46351fc54304196bb196af51e2
+  "xpdf-japanese.tar.bz2:"	dbd5f1dd99c4ef73a26e28e9e07afaf98b7f5db1
+  "xpdf-korean.tar.bz2:"	2a879da4ab3c725a5161160e726ebe827395c437
+  "xpdf-latin2.tar.bz2:"	b87dae7e58490512126ec428355bca1de9702204
+  "xpdf-thai.tar.bz2:"	251a631e5897f333882de8fa74409c83c2605310
+  "xpdf-turkish.tar.bz2:"	1546339997e934061cae05a900f12ccf3ea3b1fa

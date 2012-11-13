@@ -1,0 +1,126 @@
+--- xpdf-2.03/freetype-2.1.5/include/freetype/internal/t1types.h.deb	2003-05-30 11:12:47.000000000 +0200
++++ xpdf-2.03/freetype-2.1.5/include/freetype/internal/t1types.h	2004-01-08 21:42:05.000000000 +0100
+@@ -108,14 +108,14 @@
+     FT_Byte**        charstrings;       /* array of glyph charstrings */
+     FT_Int*          charstrings_len;
+ 
+-    FT_Byte*         paint_type;
++    FT_Byte          paint_type;
+     FT_Byte          font_type;
+     FT_Matrix        font_matrix;
+     FT_Vector        font_offset;
+     FT_BBox          font_bbox;
+     FT_Long          font_id;
+ 
+-    FT_Fixed*        stroke_width;
++    FT_Fixed         stroke_width;
+ 
+   } T1_FontRec, *T1_Font;
+ 
+--- xpdf-2.03/freetype-2.1.5/src/autohint/ahhint.c.deb	2003-08-18 01:00:59.000000000 +0200
++++ xpdf-2.03/freetype-2.1.5/src/autohint/ahhint.c	2004-01-08 21:41:58.000000000 +0100
+@@ -1850,9 +1850,9 @@
+ 
+     hinter->do_stem_adjust   = FT_BOOL( hint_mode != FT_RENDER_MODE_LIGHT );
+ 
+-
+-    load_flags  |= FT_LOAD_NO_SCALE
+-                 | FT_LOAD_IGNORE_TRANSFORM ;
++    load_flags |= FT_LOAD_NO_SCALE
++                | FT_LOAD_IGNORE_TRANSFORM;
++    load_flags &= ~FT_LOAD_RENDER;
+ 
+     error = ah_hinter_load( hinter, glyph_index, load_flags, 0 );
+ 
+--- xpdf-2.03/freetype-2.1.5/src/truetype/ttgload.c.deb	2003-06-22 17:33:53.000000000 +0200
++++ xpdf-2.03/freetype-2.1.5/src/truetype/ttgload.c	2004-01-08 21:41:25.000000000 +0100
+@@ -138,7 +138,12 @@
+     TT_Get_Metrics( &face->horizontal, idx, lsb, aw );
+ 
+     if ( check && face->postscript.isFixedPitch )
+-      *aw = face->horizontal.advance_Width_Max;
++    {
++      if ( *aw > face->horizontal.advance_Width_Max * 0.55 || *aw == 0 )
++	*aw = face->horizontal.advance_Width_Max;
++      else
++	*aw = face->horizontal.advance_Width_Max >> 1;
++    }
+   }
+ 
+ 
+--- xpdf-2.03/freetype-2.1.5/src/type1/t1parse.c.deb	2002-09-17 14:39:19.000000000 +0200
++++ xpdf-2.03/freetype-2.1.5/src/type1/t1parse.c	2004-01-08 21:41:45.000000000 +0100
+@@ -4,7 +4,7 @@
+ /*                                                                         */
+ /*    Type 1 parser (body).                                                */
+ /*                                                                         */
+-/*  Copyright 1996-2001, 2002 by                                           */
++/*  Copyright 1996-2001, 2002, 2003 by                                     */
+ /*  David Turner, Robert Wilhelm, and Werner Lemberg.                      */
+ /*                                                                         */
+ /*  This file is part of the FreeType project, and may only be used,       */
+@@ -79,20 +79,6 @@
+   } PFB_Tag;
+ 
+ 
+-#undef  FT_STRUCTURE
+-#define FT_STRUCTURE  PFB_Tag
+-
+-
+-  static
+-  const FT_Frame_Field  pfb_tag_fields[] =
+-  {
+-    FT_FRAME_START( 6 ),
+-      FT_FRAME_USHORT ( tag ),
+-      FT_FRAME_LONG_LE( size ),
+-    FT_FRAME_END
+-  };
+-
+-
+   static FT_Error
+   read_pfb_tag( FT_Stream   stream,
+                 FT_UShort*  tag,
+@@ -104,14 +90,18 @@
+ 
+     *tag  = 0;
+     *size = 0;
+-    if ( !FT_STREAM_READ_FIELDS( pfb_tag_fields, &head ) )
++
++    if ( !FT_READ_USHORT( head.tag ) )
+     {
+       if ( head.tag == 0x8001U || head.tag == 0x8002U )
+       {
+-        *tag  = head.tag;
+-        *size = head.size;
++        if ( !FT_READ_LONG_LE( head.size ) )
++          *size = head.size;
+       }
++
++      *tag = head.tag;
+     }
++
+     return error;
+   }
+ 
+--- xpdf-2.03/freetype-2.1.5/src/type1/t1objs.c.deb	2003-07-26 00:09:53.000000000 +0200
++++ xpdf-2.03/freetype-2.1.5/src/type1/t1objs.c	2004-01-08 21:42:05.000000000 +0100
+@@ -229,8 +229,6 @@
+       FT_FREE( type1->encoding.char_name );
+       FT_FREE( type1->font_name );
+ 
+-      FT_FREE( type1->paint_type );
+-      FT_FREE( type1->stroke_width );
+ 
+ #ifndef T1_CONFIG_OPTION_NO_AFM
+       /* release afm data if present */
+--- xpdf-2.03/freetype-2.1.5/src/type42/t42objs.c.deb	2003-07-26 00:09:53.000000000 +0200
++++ xpdf-2.03/freetype-2.1.5/src/type42/t42objs.c	2004-01-08 21:42:05.000000000 +0100
+@@ -398,8 +398,6 @@
+       FT_FREE( type1->encoding.char_name );
+       FT_FREE( type1->font_name );
+ 
+-      FT_FREE( type1->paint_type );
+-      FT_FREE( type1->stroke_width );
+ 
+       FT_FREE( face->ttf_data );
+ 

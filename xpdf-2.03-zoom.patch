@@ -1,0 +1,27 @@
+--- xpdf-2.03/xpdf/XPDFViewer.h.orig	2003-12-21 16:13:48.000000000 +0100
++++ xpdf-2.03/xpdf/XPDFViewer.h	2003-12-21 16:14:05.000000000 +0100
+@@ -41,7 +41,7 @@
+ //------------------------------------------------------------------------
+ 
+ // NB: this must match the defn of zoomMenuBtnInfo in XPDFViewer.cc
+-#define nZoomMenuItems 10
++#define nZoomMenuItems 12
+ 
+ //------------------------------------------------------------------------
+ 
+--- xpdf-2.03/xpdf/XPDFViewer.cc.zoom	2003-10-11 22:39:12.000000000 +0200
++++ xpdf-2.03/xpdf/XPDFViewer.cc	2003-12-21 16:04:39.000000000 +0100
+@@ -91,6 +91,8 @@
+ };
+ 
+ static ZoomMenuInfo zoomMenuInfo[nZoomMenuItems] = {
++  { "800%",      800 },
++  { "600%",      600 },
+   { "400%",      400 },
+   { "200%",      200 },
+   { "150%",      150 },
+Index: xpdf/XPDFViewer.h
+===================================================================
+--- xpdf/XPDFViewer.h
++++ xpdf/XPDFViewer.h	2009-03-07 02:34:47.000000000 +0100
+

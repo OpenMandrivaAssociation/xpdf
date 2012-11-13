@@ -1,0 +1,16 @@
+--- xpdf-3.00/xpdf-chinese-simplified/add-to-xpdfrc.chinese	2005-03-09 19:17:51.372658191 +0100
++++ xpdf-3.00/xpdf-chinese-simplified/add-to-xpdfrc	2005-03-09 19:19:18.845547654 +0100
+@@ -6,4 +6,5 @@
+ cMapDir		Adobe-GB1	/usr/local/share/xpdf/chinese-simplified/CMap
+ toUnicodeDir			/usr/local/share/xpdf/chinese-simplified/CMap
+ displayCIDFontX	Adobe-GB1	"-*-fangsong ti-medium-r-normal-*-%s-*-*-*-*-*-gb2312.1980-0" ISO-2022-CN
++displayCIDFontTT Adobe-GB1	/usr/share/fonts/TTF/chinese/uming.ttc
+ #----- end Chinese Simplified support package
+--- xpdf-3.00/xpdf-chinese-traditional/add-to-xpdfrc.chinese	2005-03-09 19:20:07.138585877 +0100
++++ xpdf-3.00/xpdf-chinese-traditional/add-to-xpdfrc	2005-03-09 19:20:07.138585877 +0100
+@@ -7,4 +7,5 @@
+ displayCIDFontX	Adobe-CNS1	"-*-fixed-medium-r-normal-*-%s-*-*-*-*-*-big5-0" Big5
+ # If you have the Arphic fonts, you may want to use this instead:
+ # displayCIDFontX Adobe-CNS1	"-arphic-ar pl kaitim big5-medium-r-normal--%s-*-*-*-c-*-iso10646-1" UCS-2
++displayCIDFontTT Adobe-CNS1	/usr/share/fonts/TTF/chinese/uming.ttc
+ #----- end Chinese Traditional support package

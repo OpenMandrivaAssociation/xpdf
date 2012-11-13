@@ -1,0 +1,11 @@
+--- xpdf-3.01/xpdf/XPDFViewer.cc.xfont	2005-08-24 17:15:04.000000000 +0200
++++ xpdf-3.01/xpdf/XPDFViewer.cc	2005-08-24 17:16:50.000000000 +0200
+@@ -1778,7 +1778,7 @@
+   aboutBigFont =
+     createFontList("-*-times-bold-i-normal--20-*-*-*-*-*-iso8859-1");
+   aboutVersionFont =
+-    createFontList("-*-times-medium-r-normal--16-*-*-*-*-*-iso8859-1");
++    createFontList("-*-times-medium-r-normal--14-*-*-*-*-*-iso8859-1");
+   aboutFixedFont =
+     createFontList("-*-courier-medium-r-normal--12-*-*-*-*-*-iso8859-1");
+ 

@@ -1,0 +1,13 @@
+--- xpdf-3.01/xpdf/XPDFCore.cc.core	2005-08-24 16:52:43.000000000 +0200
++++ xpdf-3.01/xpdf/XPDFCore.cc	2005-08-24 16:58:03.000000000 +0200
+@@ -466,6 +466,10 @@
+   GString *msg;
+   int i;
+ 
++  if (action == NULL)
++    // Nothing to do.
++    return;
++
+   switch (kind = action->getKind()) {
+ 
+   // GoTo / GoToR action

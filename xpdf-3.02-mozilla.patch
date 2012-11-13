@@ -1,0 +1,84 @@
+--- xpdf-3.02/doc/xpdf.1.mozilla	2007-02-27 23:05:51.000000000 +0100
++++ xpdf-3.02/doc/xpdf.1	2007-03-10 15:28:38.000000000 +0100
+@@ -429,7 +429,7 @@
+ .B q
+ Quit xpdf.
+ .SH "WEB BROWSERS"
+-If you want to run xpdf automatically from netscape or mosaic (and
++If you want to run xpdf automatically from mozilla or mosaic (and
+ probably other browsers) when you click on a link to a PDF file, you
+ need to edit (or create) the files
+ .I .mime.types
+@@ -458,11 +458,11 @@
+ .PP
+ When you click on a URL link in a PDF file, xpdf will execute the
+ command specified by the urlCommand config file option, replacing an
+-occurrence of \'%s' with the URL.  For example, to call netscape with
++occurrence of \'%s' with the URL.  For example, to call mozilla with
+ the URL, add this line to your config file:
+ .PP
+ .RS
+-urlCommand "netscape -remote 'openURL(%s)'"
++urlCommand "mozilla -remote 'openURL(%s)'"
+ .RE
+ .SH COMMANDS
+ Xpdf's key and mouse bindings are user-configurable, using the bind and
+--- xpdf-3.02/doc/xpdf.cat.mozilla	2007-02-27 23:05:51.000000000 +0100
++++ xpdf-3.02/doc/xpdf.cat	2007-03-10 15:30:28.000000000 +0100
+@@ -410,7 +410,7 @@
+        q      Quit xpdf.
+ 
+ WEB BROWSERS
+-       If  you  want  to  run xpdf automatically from netscape or
++       If  you  want  to  run xpdf automatically from mozilla  or
+        mosaic (and probably other browsers) when you click  on  a
+        link to a PDF file, you need to edit (or create) the files
+        .mime.types and  .mailcap  in  your  home  directory.   In
+@@ -428,10 +428,10 @@
+        When you click on a URL link in a PDF file, xpdf will exe-
+        cute the command specified by the urlCommand  config  file
+        option, replacing an occurrence of '%s' with the URL.  For
+-       example, to call netscape with the URL, add this  line  to
++       example, to call mozilla  with the URL, add this  line  to
+        your config file:
+ 
+-              urlCommand "netscape -remote 'openURL(%s)'"
++              urlCommand "mozilla -remote 'openURL(%s)'"
+ 
+ COMMANDS
+        Xpdf's key and mouse bindings are user-configurable, using
+--- xpdf-3.02/doc/xpdf.hlp.mozilla	2007-02-27 23:05:51.000000000 +0100
++++ xpdf-3.02/doc/xpdf.hlp	2007-03-10 15:28:38.000000000 +0100
+@@ -412,7 +412,7 @@
+ 
+ 2 WEB_BROWSERS
+ 
+-       If  you  want  to  run xpdf automatically from netscape or
++       If  you  want  to  run xpdf automatically from mozilla  or
+        mosaic (and probably other browsers) when you click  on  a
+        link to a PDF file, you need to edit (or create) the files
+        .mime.types and  .mailcap  in  your  home  directory.   In
+@@ -430,10 +430,10 @@
+        When you click on a URL link in a PDF file, xpdf will exe-
+        cute the command specified by the urlCommand  config  file
+        option, replacing an occurrence of '%s' with the URL.  For
+-       example, to call netscape with the URL, add this  line  to
++       example, to call mozilla  with the URL, add this  line  to
+        your config file:
+ 
+-              urlCommand "netscape -remote 'openURL(%s)'"
++              urlCommand "mozilla -remote 'openURL(%s)'"
+ 
+                                                                ()
+ 
+--- xpdf-3.02/doc/xpdfrc.5.mozilla	2007-02-27 23:05:51.000000000 +0100
++++ xpdf-3.02/doc/xpdfrc.5	2007-03-10 15:28:38.000000000 +0100
+@@ -591,7 +591,7 @@
+ # misc options
+ t1libControl    low
+ freetypeControl low
+-urlCommand      "netscape -remote 'openURL(%s)'"
++urlCommand      "mozilla -remote 'openURL(%s)'"
+ 
+ .fi
+ .SH FILES
