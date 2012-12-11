@@ -30,7 +30,7 @@
    char *mem;
    GMemHdr *hdr;
    void *data;
-@@ -106,11 +106,11 @@
+@@ -122,11 +122,11 @@
  #endif
  }
  
@@ -42,8 +42,8 @@
 -  int oldSize;
 +  size_t oldSize;
  
-   if (size <= 0) {
-     if (p) {
+   if (size < 0) {
+ #if USE_EXCEPTIONS
 @@ -155,7 +155,7 @@
  }
  

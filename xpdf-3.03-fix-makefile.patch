@@ -1,0 +1,31 @@
+diff --git a/xpdf/Makefile.in b/xpdf/Makefile.in
+index 3ca8b8c..e438e0b 100644
+--- a/xpdf/Makefile.in
++++ b/xpdf/Makefile.in
+@@ -119,16 +119,16 @@ all: depend libxpdf.la $(BINARIES)
+ 
+ #------------------------------------------------------------------------
+ 
+-XPDF_OBJS = Annot.o Array.o BuiltinFont.o BuiltinFontTables.o Catalog.o \
+-	CharCodeToUnicode.o CMap.o CoreOutputDev.o Decrypt.o Dict.o \
+-	Error.o FontEncodingTables.o Function.o Gfx.o GfxFont.o \
+-	GfxState.o GlobalParams.o JArithmeticDecoder.o JBIG2Stream.o \
+-	JPXStream.o Lexer.o Link.o NameToCharCode.o Object.o \
+-	OptionalContent.o Outline.o OutputDev.o Page.o Parser.o PDFCore.o \
+-	PDFDoc.o PDFDocEncoding.o PreScanOutputDev.o PSOutputDev.o \
+-	PSTokenizer.o SecurityHandler.o SplashOutputDev.o Stream.o \
+-	TextOutputDev.o UnicodeMap.o UnicodeTypeTable.o XPDFApp.o \
+-	XPDFCore.o XPDFTree.o XPDFViewer.o XpdfPluginAPI.o XRef.o xpdf.o
++XPDF_OBJS = Annot.lo Array.lo BuiltinFont.lo BuiltinFontTables.lo Catalog.lo \
++	CharCodeToUnicode.lo CMap.lo CoreOutputDev.lo Decrypt.lo Dict.lo \
++	Error.lo FontEncodingTables.lo Function.lo Gfx.lo GfxFont.lo \
++	GfxState.lo GlobalParams.lo JArithmeticDecoder.lo JBIG2Stream.lo \
++	JPXStream.lo Lexer.lo Link.lo NameToCharCode.lo Object.lo \
++	OptionalContent.lo Outline.lo OutputDev.lo Page.lo Parser.lo PDFCore.lo \
++	PDFDoc.lo PDFDocEncoding.lo PreScanOutputDev.lo PSOutputDev.lo \
++	PSTokenizer.lo SecurityHandler.lo SplashOutputDev.lo Stream.lo \
++	TextOutputDev.lo UnicodeMap.lo UnicodeTypeTable.lo XPDFApp.lo \
++	XPDFCore.lo XPDFTree.lo XPDFViewer.lo XpdfPluginAPI.lo XRef.lo xpdf.lo
+ 
+ LTOBJS:= $(XPDF_OBJS:.o=.lo)
+ 

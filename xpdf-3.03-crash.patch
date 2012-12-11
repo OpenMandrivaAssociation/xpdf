@@ -20,7 +20,7 @@
        }
 --- xpdf-3.02/splash/Splash.cc.crash	2007-02-27 23:05:52.000000000 +0100
 +++ xpdf-3.02/splash/Splash.cc	2009-04-13 10:25:06.000000000 +0200
-@@ -1501,6 +1501,11 @@
+@@ -2053,6 +2053,11 @@
      xPath->aaScale();
    }
    xPath->sort();
@@ -29,6 +29,6 @@
 +    delete xPath;
 +    return splashErrEmptyPath;
 +  }
-   scanner = new SplashXPathScanner(xPath, eo);
- 
-   // get the min and max x and y values
+   yMinI = state->clip->getYMinI();
+   yMaxI = state->clip->getYMaxI();
+   if (vectorAntialias && !inShading) {

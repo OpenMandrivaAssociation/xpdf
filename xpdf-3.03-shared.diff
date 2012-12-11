@@ -55,7 +55,7 @@ diff -Naur xpdf-3.02/Makefile.in xpdf-3.02.oden/Makefile.in
  xpdf: dummy
  	cd goo; $(MAKE)
  	cd @UP_DIR@fofi; $(MAKE)
-@@ -76,25 +80,31 @@
+@@ -86,27 +86,33 @@
  dummy:
  
  install: dummy
@@ -65,6 +65,7 @@ diff -Naur xpdf-3.02/Makefile.in xpdf-3.02.oden/Makefile.in
 -	$(INSTALL_PROGRAM) xpdf/pdftotext$(EXE) $(DESTDIR)@bindir@/pdftotext$(EXE)
 -	$(INSTALL_PROGRAM) xpdf/pdfinfo$(EXE) $(DESTDIR)@bindir@/pdfinfo$(EXE)
 -	$(INSTALL_PROGRAM) xpdf/pdffonts$(EXE) $(DESTDIR)@bindir@/pdffonts$(EXE)
+-	$(INSTALL_PROGRAM) xpdf/pdfdetach$(EXE) $(DESTDIR)@bindir@/pdfdetach$(EXE)
 -@X@	$(INSTALL_PROGRAM) xpdf/pdftoppm$(EXE) $(DESTDIR)@bindir@/pdftoppm$(EXE)
 -	$(INSTALL_PROGRAM) xpdf/pdfimages$(EXE) $(DESTDIR)@bindir@/pdfimages$(EXE)
 -	-mkdir -p $(DESTDIR)@mandir@/man1
@@ -76,6 +77,7 @@ diff -Naur xpdf-3.02/Makefile.in xpdf-3.02.oden/Makefile.in
 +	$(LIBTOOL) --mode=install $(INSTALL) -m 755 xpdf/pdftotext $(DESTDIR)@bindir@
 +	$(LIBTOOL) --mode=install $(INSTALL) -m 755 xpdf/pdfinfo $(DESTDIR)@bindir@
 +	$(LIBTOOL) --mode=install $(INSTALL) -m 755 xpdf/pdffonts $(DESTDIR)@bindir@
++	$(LIBTOOL) --mode=install $(INSTALL) -m 755 xpdf/pdfdetach $(DESTDIR)@bindir@
 +	$(LIBTOOL) --mode=install $(INSTALL) -m 755 xpdf/pdftoppm $(DESTDIR)@bindir@
 +	$(LIBTOOL) --mode=install $(INSTALL) -m 755 xpdf/pdfimages $(DESTDIR)@bindir@
 +	# provide the shared and static libs
@@ -88,6 +90,7 @@ diff -Naur xpdf-3.02/Makefile.in xpdf-3.02.oden/Makefile.in
  	$(INSTALL_DATA) $(srcdir)/doc/pdftotext.1 $(DESTDIR)@mandir@/man1/pdftotext.1
  	$(INSTALL_DATA) $(srcdir)/doc/pdfinfo.1 $(DESTDIR)@mandir@/man1/pdfinfo.1
  	$(INSTALL_DATA) $(srcdir)/doc/pdffonts.1 $(DESTDIR)@mandir@/man1/pdffonts.1
+ 	$(INSTALL_DATA) $(srcdir)/doc/pdfdetach.1 $(DESTDIR)@mandir@/man1/pdfdetach.1
 -@X@	$(INSTALL_DATA) $(srcdir)/doc/pdftoppm.1 $(DESTDIR)@mandir@/man1/pdftoppm.1
 +	$(INSTALL_DATA) $(srcdir)/doc/pdftoppm.1 $(DESTDIR)@mandir@/man1/pdftoppm.1
  	$(INSTALL_DATA) $(srcdir)/doc/pdfimages.1 $(DESTDIR)@mandir@/man1/pdfimages.1
@@ -151,7 +154,7 @@ diff -Naur xpdf-3.02/xpdf/Makefile.in xpdf-3.02.oden/xpdf/Makefile.in
  EXE = @EXE@
  
 +BINARIES = xpdf$(EXE) pdftops$(EXE) pdftotext$(EXE) pdfinfo$(EXE) \
-+	pdffonts$(EXE) pdftoppm$(EXE) pdfimages$(EXE)
++	pdffonts$(EXE) pdfdetach$(EXE) pdftoppm$(EXE) pdfimages$(EXE)
 +
  #------------------------------------------------------------------------
  
@@ -163,28 +166,23 @@ diff -Naur xpdf-3.02/xpdf/Makefile.in xpdf-3.02.oden/xpdf/Makefile.in
  #------------------------------------------------------------------------
  
  CXX_SRC = \
-@@ -106,11 +113,7 @@
+@@ -115,11 +115,7 @@
  
  #------------------------------------------------------------------------
  
 -all: xpdf$(EXE) pdftops$(EXE) pdftotext$(EXE) pdfinfo$(EXE) \
--	pdffonts$(EXE) pdftoppm$(EXE) pdfimages$(EXE)
+-	pdffonts$(EXE) pdfdetach$(EXE) pdftoppm$(EXE) pdfimages$(EXE)
 -
 -all-no-x: pdftops$(EXE) pdftotext$(EXE) pdfinfo$(EXE) pdffonts$(EXE) \
--	pdfimages$(EXE)
+-	pdfdetach$(EXE) pdfimages$(EXE)
 +all: depend libxpdf.la $(BINARIES)
  
  #------------------------------------------------------------------------
  
-@@ -120,124 +123,56 @@
- 	GfxState.o GlobalParams.o JArithmeticDecoder.o JBIG2Stream.o \
- 	JPXStream.o Lexer.o Link.o NameToCharCode.o Object.o Outline.o \
- 	OutputDev.o Page.o Parser.o PDFCore.o PDFDoc.o PDFDocEncoding.o \
--	PreScanOutputDev.o PSOutputDev.o PSTokenizer.o SecurityHandler.x.o \
-+	PreScanOutputDev.o PSOutputDev.o PSTokenizer.o SecurityHandler.o \
- 	SplashOutputDev.o Stream.o TextOutputDev.o UnicodeMap.o \
- 	UnicodeTypeTable.o XPDFApp.o XPDFCore.o XPDFTree.o XPDFViewer.o \
- 	XpdfPluginAPI.o XRef.o xpdf.o
+@@ -133,132 +129,56 @@
+ 	PSTokenizer.o SecurityHandler.o SplashOutputDev.o Stream.o \
+ 	TextOutputDev.o UnicodeMap.o UnicodeTypeTable.o XPDFApp.o \
+ 	XPDFCore.o XPDFTree.o XPDFViewer.o XpdfPluginAPI.o XRef.o xpdf.o
 -XPDF_LIBS = -L$(GOOLIBDIR) -lGoo $(SPLASHLIBS) $(T1LIBS) $(FTLIBS) \
 -	$(XLIBS) $(OTHERLIBS) -lm
 -
@@ -197,29 +195,32 @@ diff -Naur xpdf-3.02/xpdf/Makefile.in xpdf-3.02.oden/xpdf/Makefile.in
 -	Catalog.o CharCodeToUnicode.o CMap.o Decrypt.o Dict.o Error.o \
 -	FontEncodingTables.o Function.o Gfx.o GfxFont.o \
 -	GfxState.o GlobalParams.o JArithmeticDecoder.o JBIG2Stream.o \
--	JPXStream.o Lexer.o Link.o NameToCharCode.o Outline.o Object.o \
--	OutputDev.o Page.o Parser.o PDFDoc.o PDFDocEncoding.o \
--	PreScanOutputDev.o PSOutputDev.o PSTokenizer.o SecurityHandler.o \
--	SplashOutputDev.o Stream.o UnicodeMap.o XpdfPluginAPI.o XRef.o \
--	pdftops.o
+-	JPXStream.o Lexer.o Link.o NameToCharCode.o OptionalContent.o \
+-	Outline.o Object.o OutputDev.o Page.o Parser.o PDFDoc.o \
+-	PDFDocEncoding.o PreScanOutputDev.o PSOutputDev.o PSTokenizer.o \
+-	SecurityHandler.o SplashOutputDev.o Stream.o UnicodeMap.o \
+-	XpdfPluginAPI.o XRef.o pdftops.o
 -PDFTOPS_LIBS = -L$(GOOLIBDIR) -lGoo $(SPLASHLIBS) $(T1LIBS) $(FTLIBS) \
 -	$(OTHERLIBS) -lm
 -
 -pdftops$(EXE): $(PDFTOPS_OBJS) $(GOOLIBDIR)/$(LIBPREFIX)Goo.a
 -	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o pdftops$(EXE) $(PDFTOPS_OBJS) \
 -		$(PDFTOPS_LIBS)
--
--#------------------------------------------------------------------------
 +LTOBJS:= $(XPDF_OBJS:.o=.lo)
+ 
+-#------------------------------------------------------------------------
++%.o: %.cc
++	$(CXX) -c $(CXXFLAGS) $< -o $@
  
 -PDFTOTEXT_OBJS = Annot.o Array.o BuiltinFont.o BuiltinFontTables.o \
 -	Catalog.o CharCodeToUnicode.o CMap.o Decrypt.o Dict.o Error.o \
 -	FontEncodingTables.o Function.o Gfx.o GfxFont.o \
 -	GfxState.o GlobalParams.o JArithmeticDecoder.o JBIG2Stream.o \
--	JPXStream.o Lexer.o Link.o NameToCharCode.o Object.o Outline.o \
--	OutputDev.o Page.o Parser.o PDFDoc.o PDFDocEncoding.o PSTokenizer.o \
--	SecurityHandler.o Stream.o TextOutputDev.o UnicodeMap.o \
--	UnicodeTypeTable.o XpdfPluginAPI.o XRef.o pdftotext.o
+-	JPXStream.o Lexer.o Link.o NameToCharCode.o Object.o \
+-	OptionalContent.o Outline.o OutputDev.o Page.o Parser.o PDFDoc.o \
+-	PDFDocEncoding.o PSTokenizer.o SecurityHandler.o Stream.o \
+-	TextOutputDev.o UnicodeMap.o UnicodeTypeTable.o XpdfPluginAPI.o \
+-	XRef.o pdftotext.o
 -PDFTOTEXT_LIBS = -L$(GOOLIBDIR) -lGoo $(OTHERLIBS) -lm
 -
 -pdftotext$(EXE): $(PDFTOTEXT_OBJS) $(GOOLIBDIR)/$(LIBPREFIX)Goo.a
@@ -227,17 +228,15 @@ diff -Naur xpdf-3.02/xpdf/Makefile.in xpdf-3.02.oden/xpdf/Makefile.in
 -		$(PDFTOTEXT_LIBS)
 -
 -#------------------------------------------------------------------------
-+%.o: %.cc
-+	$(CXX) -c $(CXXFLAGS) $< -o $@
- 
+-
 -PDFINFO_OBJS = Annot.o Array.o BuiltinFont.o BuiltinFontTables.o \
 -	Catalog.o CharCodeToUnicode.o CMap.o Decrypt.o Dict.o Error.o \
 -	FontEncodingTables.o Function.o Gfx.o GfxFont.o \
 -	GfxState.o GlobalParams.o JArithmeticDecoder.o JBIG2Stream.o \
--	JPXStream.o Lexer.o Link.o NameToCharCode.o Object.o Outline.o \
--	OutputDev.o Page.o Parser.o PDFDoc.o PDFDocEncoding.o PSTokenizer.o \
--	SecurityHandler.o Stream.o UnicodeMap.o XpdfPluginAPI.o XRef.o \
--	pdfinfo.o
+-	JPXStream.o Lexer.o Link.o NameToCharCode.o Object.o \
+-	OptionalContent.o Outline.o OutputDev.o Page.o Parser.o PDFDoc.o \
+-	PDFDocEncoding.o PSTokenizer.o SecurityHandler.o Stream.o \
+-	UnicodeMap.o XpdfPluginAPI.o XRef.o pdfinfo.o
 -PDFINFO_LIBS = -L$(GOOLIBDIR) -lGoo $(OTHERLIBS) -lm
 -
 -pdfinfo$(EXE): $(PDFINFO_OBJS) $(GOOLIBDIR)/$(LIBPREFIX)Goo.a
@@ -250,10 +249,10 @@ diff -Naur xpdf-3.02/xpdf/Makefile.in xpdf-3.02.oden/xpdf/Makefile.in
 -	Catalog.o CharCodeToUnicode.o CMap.o Decrypt.o Dict.o Error.o \
 -	FontEncodingTables.o Function.o Gfx.o GfxFont.o \
 -	GfxState.o GlobalParams.o JArithmeticDecoder.o JBIG2Stream.o \
--	JPXStream.o Lexer.o Link.o NameToCharCode.o Object.o Outline.o \
--	OutputDev.o Page.o Parser.o PDFDoc.o PDFDocEncoding.o PSTokenizer.o \
--	SecurityHandler.o Stream.o UnicodeMap.o XpdfPluginAPI.o XRef.o \
--	pdffonts.o
+-	JPXStream.o Lexer.o Link.o NameToCharCode.o Object.o \
+-	OptionalContent.o Outline.o OutputDev.o Page.o Parser.o PDFDoc.o \
+-	PDFDocEncoding.o PSTokenizer.o SecurityHandler.o Stream.o \
+-	UnicodeMap.o XpdfPluginAPI.o XRef.o pdffonts.o
 -PDFFONTS_LIBS = -L$(GOOLIBDIR) -lGoo $(OTHERLIBS) -lm
 -
 -pdffonts$(EXE): $(PDFFONTS_OBJS) $(GOOLIBDIR)/$(LIBPREFIX)Goo.a
@@ -262,14 +261,31 @@ diff -Naur xpdf-3.02/xpdf/Makefile.in xpdf-3.02.oden/xpdf/Makefile.in
 -
 -#------------------------------------------------------------------------
 -
+-PDFDETACH_OBJS = Annot.o Array.o BuiltinFont.o BuiltinFontTables.o \
+-	Catalog.o CharCodeToUnicode.o CMap.o Decrypt.o Dict.o Error.o \
+-	FontEncodingTables.o Function.o Gfx.o GfxFont.o \
+-	GfxState.o GlobalParams.o JArithmeticDecoder.o JBIG2Stream.o \
+-	JPXStream.o Lexer.o Link.o NameToCharCode.o Object.o \
+-	OptionalContent.o Outline.o OutputDev.o Page.o Parser.o PDFDoc.o \
+-	PDFDocEncoding.o PSTokenizer.o SecurityHandler.o Stream.o \
+-	UnicodeMap.o XpdfPluginAPI.o XRef.o pdfdetach.o
+-PDFDETACH_LIBS = -L$(GOOLIBDIR) -lGoo $(OTHERLIBS) -lm
+-
+-pdfdetach$(EXE): $(PDFDETACH_OBJS) $(GOOLIBDIR)/$(LIBPREFIX)Goo.a
+-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o pdfdetach$(EXE) $(PDFDETACH_OBJS) \
+-		$(PDFDETACH_LIBS)
+-
+-#------------------------------------------------------------------------
+-
 -PDFTOPPM_OBJS = Annot.o Array.o BuiltinFont.o BuiltinFontTables.o \
 -	Catalog.o CharCodeToUnicode.o CMap.o Decrypt.o Dict.o Error.o \
 -	FontEncodingTables.o Function.o Gfx.o GfxFont.o GfxState.o \
 -	GlobalParams.o JArithmeticDecoder.o JBIG2Stream.o JPXStream.o \
--	Lexer.o Link.o NameToCharCode.o Object.o Outline.o OutputDev.o \
--	Page.o Parser.o PDFDoc.o PDFDocEncoding.o PSTokenizer.o \
--	SecurityHandler.o SplashOutputDev.o Stream.o TextOutputDev.o \
--	UnicodeMap.o UnicodeTypeTable.o XpdfPluginAPI.o XRef.o pdftoppm.o
+-	Lexer.o Link.o NameToCharCode.o Object.o OptionalContent.o \
+-	Outline.o OutputDev.o Page.o Parser.o PDFDoc.o PDFDocEncoding.o \
+-	PSTokenizer.o SecurityHandler.o SplashOutputDev.o Stream.o \
+-	TextOutputDev.o UnicodeMap.o UnicodeTypeTable.o XpdfPluginAPI.o \
+-	XRef.o pdftoppm.o
 -PDFTOPPM_LIBS = -L$(GOOLIBDIR) -lGoo $(SPLASHLIBS) $(T1LIBS) $(FTLIBS) \
 -	$(OTHERLIBS) -lm
 -
@@ -278,32 +294,26 @@ diff -Naur xpdf-3.02/xpdf/Makefile.in xpdf-3.02.oden/xpdf/Makefile.in
 -		$(PDFTOPPM_LIBS)
 -
 -#------------------------------------------------------------------------
--
++%.lo: %.cc
++	$(LIBTOOL) --mode=compile $(CXX) -c $(CXXFLAGS) $< -o $@
+ 
 -PDFIMAGES_OBJS = Annot.o Array.o BuiltinFont.o BuiltinFontTables.o \
 -	Catalog.o CharCodeToUnicode.o CMap.o Decrypt.o Dict.o Error.o \
 -	FontEncodingTables.o Function.o Gfx.o GfxFont.o GfxState.o \
 -	GlobalParams.o ImageOutputDev.o JArithmeticDecoder.o \
 -	JBIG2Stream.o JPXStream.o Lexer.o Link.o NameToCharCode.o Object.o \
--	Outline.o OutputDev.o Page.o Parser.o PDFDoc.o PDFDocEncoding.o \
--	PSTokenizer.o SecurityHandler.o Stream.o UnicodeMap.o \
--	XpdfPluginAPI.o XRef.o pdfimages.o
+-	OptionalContent.o Outline.o OutputDev.o Page.o Parser.o PDFDoc.o \
+-	PDFDocEncoding.o PSTokenizer.o SecurityHandler.o Stream.o \
+-	UnicodeMap.o XpdfPluginAPI.o XRef.o pdfimages.o
 -PDFIMAGES_LIBS = -L$(GOOLIBDIR) -lGoo $(OTHERLIBS) -lm
 -
 -pdfimages$(EXE): $(PDFIMAGES_OBJS) $(GOOLIBDIR)/$(LIBPREFIX)Goo.a
 -	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o pdfimages$(EXE) $(PDFIMAGES_OBJS) \
 -		$(PDFIMAGES_LIBS)
--
--#------------------------------------------------------------------------
-+%.lo: %.cc
-+	$(LIBTOOL) --mode=compile $(CXX) -c $(CXXFLAGS) $< -o $@
- 
--SecurityHandler.x.o: SecurityHandler.cc
--	$(CXX) $(CXXFLAGS) -DHAVE_XPDFCORE -c -o SecurityHandler.x.o \
--		SecurityHandler.cc
 +libxpdf.la: $(LTOBJS)
 +	$(LIBTOOL) --mode=link $(CXX) $(CXXFLAGS) $(LDFLAGS) -rpath $(libdir) \
 +	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -o \
-+	libxpdf.la $(OTHERLIBS) $(SPLASHLIBS) $(XPDF_OBJS) $(XPDF_LIBS) $(XLIBS) $(T1LIBS)
++	libxpdf.la $(XPDF_OBJS) $(OTHERLIBS) $(SPLASHLIBS) $(XPDF_LIBS) $(XLIBS) $(T1LIBS)
 +
 +xpdf$(EXE): libxpdf.la
 +	$(LIBTOOL) --mode=link $(CXX) $(CXXFLAGS) -o $@ $(LDFLAGS) $^ \
@@ -322,6 +332,10 @@ diff -Naur xpdf-3.02/xpdf/Makefile.in xpdf-3.02.oden/xpdf/Makefile.in
 +	libxpdf.la -lm
 +
 +pdffonts$(EXE): libxpdf.la pdffonts.lo
++	$(LIBTOOL) --mode=link $(CXX) $(CXXFLAGS) -o $@ $(LDFLAGS) $^ \
++	libxpdf.la -lm
++
++pdfdetach$(EXE): libxpdf.la pdfdetach.lo
 +	$(LIBTOOL) --mode=link $(CXX) $(CXXFLAGS) -o $@ $(LDFLAGS) $^ \
 +	libxpdf.la -lm
 +
