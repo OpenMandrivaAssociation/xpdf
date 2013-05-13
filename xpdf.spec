@@ -51,19 +51,19 @@ Patch28:        %{name}-3.03-fix-makefile.patch
 #
 URL:		http://www.foolabs.com/xpdf/
 Group:		Publishing
-BuildRequires:	libx11-devel
-BuildRequires:	libxt-devel
+BuildRequires:	pkgconfig(x11)
+BuildRequires:	pkgconfig(xt)
 BuildRequires:	xpm-devel
 BuildRequires:	freetype2-devel >= 2.0.5
 BuildRequires:	zlib-devel
 BuildRequires:	fontconfig-devel
-BuildRequires:	libxrender-devel
-BuildRequires:	libxft-devel
+BuildRequires:	pkgconfig(xrender)
+BuildRequires:	pkgconfig(xft)
 BuildConflicts:	libpaper-devel
 BuildRequires:	autoconf
 BuildRequires:	libtool
 %if %build_lesstif
-BuildRequires:	libfontconfig-devel
+BuildRequires:	pkgconfig(fontconfig)
 BuildConflicts:	lesstif-devel
 %else
 BuildRequires:	lesstif-devel
