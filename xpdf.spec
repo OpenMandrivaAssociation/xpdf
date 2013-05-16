@@ -54,7 +54,7 @@ Group:		Publishing
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xt)
 BuildRequires:	xpm-devel
-BuildRequires:	freetype2-devel >= 2.0.5
+BuildRequires:	pkgconfig(freetype2)
 BuildRequires:	zlib-devel
 BuildRequires:	fontconfig-devel
 BuildRequires:	pkgconfig(xrender)
