@@ -1,23 +1,23 @@
-%define	major 0
+%define major 0
 %define libname %mklibname xpdf %{major}
-%define develname %mklibname xpdf -d
+%define devname %mklibname xpdf -d
 
 %define urwdir %{_datadir}/fonts/default/Type1
-%define lesstifver	0.93.41
-%define freetypever	2.1.5
-%define x11dir		/usr/X11R6
-%define build_lesstif	0
-%define build_freetype2	0
-%define usefreetype2	1
-%define	pkgversion	3.03
-%define fversion	3.03
+%define lesstifver 0.93.41
+%define freetypever 2.1.5
+%define x11dir /usr/X11R6
+%define build_lesstif 0
+%define build_freetype2 0
+%define usefreetype2 1
 
 Summary:	A PDF file viewer for the X Window System
 Name:		xpdf
-Version:	%{pkgversion}
+Version:	3.03
 Release:	2
 License:	GPLv2+
-Source0:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{fversion}.tar.bz2
+Group:		Publishing
+Url:		http://www.foolabs.com/xpdf/
+Source0:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{version}.tar.bz2
 Source1:	icons-%{name}.tar.bz2
 Source2:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-chinese-simplified.tar.bz2
 Source3:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-chinese-traditional.tar.bz2
@@ -32,7 +32,7 @@ Source11:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-hebrew.tar.bz2
 Source12:	ftp://ftp.hungry.com/pub/hungry/lesstif/srcdist/lesstif-%{lesstifver}.tar.bz2
 Source13:	ftp://ftp.freetype.org/freetype/freetype2/freetype-%{freetypever}.tar.bz2
 Source14:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-arabic.tar.bz2
-Source100:	xpdf.rpmlintrc
+#Source100:	xpdf.rpmlintrc
 
 Patch0:		xpdf-3.03-shared.diff
 Patch2:		%{name}-3.01-antihigh.patch
@@ -47,23 +47,18 @@ Patch19:	%{name}-3.01-core.patch
 Patch20:	%{name}-3.03-crash.patch
 Patch21:	%{name}-3.01-xfont.patch
 Patch27:	%{name}-3.03-strcast.patch
-Patch28:        %{name}-3.03-fix-makefile.patch
-#
-URL:		http://www.foolabs.com/xpdf/
-Group:		Publishing
+Patch28:	%{name}-3.03-fix-makefile.patch
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xt)
-BuildRequires:	xpm-devel
+BuildRequires:	pkgconfig(xpm)
 BuildRequires:	pkgconfig(freetype2)
-BuildRequires:	zlib-devel
-BuildRequires:	fontconfig-devel
+BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(fontconfig)
 BuildRequires:	pkgconfig(xrender)
 BuildRequires:	pkgconfig(xft)
 BuildConflicts:	libpaper-devel
-BuildRequires:	autoconf
 BuildRequires:	libtool
-%if %build_lesstif
-BuildRequires:	pkgconfig(fontconfig)
+%if %{build_lesstif}
 BuildConflicts:	lesstif-devel
 %else
 BuildRequires:	lesstif-devel
@@ -72,7 +67,7 @@ Requires:	urw-fonts
 # Lesstiff user interface requires these (btw, why a static lesstif and freetype?)
 Requires:	x11-font-adobe-75dpi
 Requires:	x11-font-adobe-100dpi
-Requires:	%{name}-common >= %{version}-%{release}
+Requires:	%{name}-common = %{EVRD}
 
 %description
 Xpdf is an X Window System based viewer for Portable Document Format (PDF)
@@ -80,52 +75,78 @@ files. PDF files are sometimes called Acrobat files, after Adobe Acrobat
 (Adobe's PDF viewer).  Xpdf is a small and efficient program which uses
 standard X fonts.
 
-%package -n	%{libname}
+%files
+%{_bindir}/xpdf
+%{_mandir}/man1/xpdf.1*
+%{_datadir}/applications/%{name}.desktop
+%{_iconsdir}/*.*
+%{_liconsdir}/*.*
+%{_miconsdir}/*.*
+
+#----------------------------------------------------------------------------
+
+%package -n %{libname}
 Summary:	Shared Xpdf library
 Group:		System/Libraries
 
-%description -n	%{libname}
+%description -n %{libname}
 Xpdf is an X Window System based viewer for Portable Document Format (PDF)
 files. PDF files are sometimes called Acrobat files, after Adobe Acrobat
-(Adobe's PDF viewer).  Xpdf is a small and efficient program which uses
+(Adobe's PDF viewer). Xpdf is a small and efficient program which uses
 standard X fonts.
 
-%package -n	%{develname}
+%files -n %{libname}
+%doc CHANGES README
+%{_libdir}/libxpdf.so.%{major}*
+
+#----------------------------------------------------------------------------
+
+%package -n %{devname}
 Summary:	Development files for the Xpdf library
 Group:		Development/C++
-Provides:	%{name}-devel = %{version}-%{release}
-Provides:	lib%{name}-devel = %{version}-%{release}
-Requires:	%{libname} >= %{version}
+Provides:	%{name}-devel = %{EVRD}
+Requires:	%{libname} = %{EVRD}
 
-%description -n	%{develname}
+%description -n %{devname}
 Xpdf is an X Window System based viewer for Portable Document Format (PDF)
 files. PDF files are sometimes called Acrobat files, after Adobe Acrobat
-(Adobe's PDF viewer).  Xpdf is a small and efficient program which uses
+(Adobe's PDF viewer). Xpdf is a small and efficient program which uses
 standard X fonts.
 
 This package contains the development files for Xpdf.
 
-%package	common
-Group:		Publishing
-Summary:	Common files for xpdf and the applications based on it
-Conflicts:	xpdf < 3.02-7
+%files -n %{devname}
+%{_includedir}/%{name}
+%{_libdir}/*.so
 
-%description	common
+#----------------------------------------------------------------------------
+
+%package common
+Summary:	Common files for xpdf and the applications based on it
+Group:		Publishing
+
+%description common
 Xpdf is an X Window System based viewer for Portable Document Format (PDF)
 files. PDF files are sometimes called Acrobat files, after Adobe Acrobat
-(Adobe's PDF viewer).  Xpdf is a small and efficient program which uses
+(Adobe's PDF viewer). Xpdf is a small and efficient program which uses
 standard X fonts.
 
 This package contains common files (such as UnicodeMap and xpdfrc) needed for
 xpdf and the applications based on it.
 
-%prep
+%files common
+%{_datadir}/%{name}
+%{_mandir}/man5/*
+%config(noreplace) %{_sysconfdir}/xpdfrc
 
-%setup -q -a2 -a3 -a4 -a5 -a6 -a7 -a8 -a9 -a10 -a11 -a12 -a13 -a14 -n %{name}-%{fversion}
+#----------------------------------------------------------------------------
+
+%prep
+%setup -q -a2 -a3 -a4 -a5 -a6 -a7 -a8 -a9 -a10 -a11 -a12 -a13 -a14
 %patch0 -p1 -b .shared
 %patch2 -p1 -b .antihigh
 %patch6 -p1 -b .zoom
-%if %build_freetype2
+%if %{build_freetype2}
 %patch9 -p1 -b .deb
 %endif
 %patch16 -p1 -b .chinese
@@ -142,9 +163,9 @@ xpdf and the applications based on it.
 CURRENTDIR=`pwd`
 
 # build a local lesstif library
-%if %build_lesstif
+%if %{build_lesstif}
 (cd lesstif-%{lesstifver}
-CFLAGS="$RPM_OPT_FLAGS" \
+CFLAGS="%{optflags}" \
 	./configure \
 			--prefix=%{x11dir} \
 			--libdir=%{x11dir}/%{_lib} \
@@ -165,7 +186,7 @@ make install \
 %endif
 
 # build a local freetype2 library
-%if %build_freetype2
+%if %{build_freetype2}
 (cd freetype-%{freetypever}
 %configure2_5x --disable-shared
 %make
@@ -175,22 +196,21 @@ make install DESTDIR=$CURRENTDIR/freetype2-local \
 
 # build xpdf
 export X_EXTRA_LIBS="-lXft -lXrender -lfontconfig -lz -lfreetype"
-autoconf
 %configure2_5x \
-	   --bindir=%{_bindir} \
-	   --mandir=%{_mandir} \
-%if %build_lesstif
-	   --with-Xm-library=$CURRENTDIR/lesstif-local/lib \
-	   --with-Xm-includes=$CURRENTDIR/lesstif-local/include \
+	--bindir=%{_bindir} \
+	--mandir=%{_mandir} \
+%if %{build_lesstif}
+	--with-Xm-library=$CURRENTDIR/lesstif-local/lib \
+	--with-Xm-includes=$CURRENTDIR/lesstif-local/include \
 %endif
-%if %build_freetype2
-	   --with-freetype2-includes=$CURRENTDIR/freetype2-local%{_includedir}/freetype2 \
-	   --with-freetype2-library=$CURRENTDIR/freetype2-local%{_libdir} \
+%if %{build_freetype2}
+	--with-freetype2-includes=$CURRENTDIR/freetype2-local%{_includedir}/freetype2 \
+	--with-freetype2-library=$CURRENTDIR/freetype2-local%{_libdir} \
 %endif
-%if %usefreetype2
-	   --with-freetype2-includes=%{_includedir}/freetype2 \
+%if %{usefreetype2}
+	--with-freetype2-includes=%{_includedir}/freetype2 \
 %endif
-	   --enable-opi 
+	--enable-opi
 
 %make
 
@@ -207,7 +227,7 @@ for i in chinese-simplified chinese-traditional cyrillic japanese \
 			../xpdf-$i/README
 		echo >> sample-xpdfrc
 		cat ../xpdf-$i/add-to-xpdfrc >> sample-xpdfrc
-		rm ../xpdf-$i/add-to-xpdfrc 
+		rm ../xpdf-$i/add-to-xpdfrc
 	done
 # Xpdf no longer supports X fonts
 perl -pi -e 's/^displayCIDFontX/#displayCIDFontX/g' sample-xpdfrc
@@ -215,7 +235,6 @@ perl -pi -e 's/^#urlCommand.*/urlCommand "www-browser %s"/' sample-xpdfrc
 popd
 
 %install
-
 install -d %{buildroot}%{_bindir}
 install -d %{buildroot}%{_mandir}/man1
 
@@ -228,13 +247,13 @@ for i in chinese-simplified chinese-traditional cyrillic japanese \
 		cp -a xpdf-$i/* %{buildroot}%{_datadir}/%{name}/$i/
 	done
 
-install -m 755 -d $RPM_BUILD_ROOT%{_datadir}/applications/
-cat > $RPM_BUILD_ROOT%{_datadir}/applications/%_real_vendor-%{name}.desktop << EOF
+install -m 755 -d %{buildroot}%{_datadir}/applications/
+cat > %{buildroot}%{_datadir}/applications/%{name}.desktop << EOF
 [Desktop Entry]
 Name=Xpdf
 Comment=Views PDF files
-Exec=%_bindir/xpdf %f
-Icon=%name
+Exec=%{_bindir}/xpdf %f
+Icon=%{name}
 Terminal=false
 Type=Application
 StartupNotify=true
@@ -244,7 +263,7 @@ EOF
 
 # mdk icons
 install -d %{buildroot}%{_iconsdir}
-tar xjf %SOURCE1 -C %{buildroot}%{_iconsdir}
+tar xjf %{SOURCE1} -C %{buildroot}%{_iconsdir}
 
 # remove unpackaged files
 rm -f %{buildroot}%{_bindir}/pdf* %{buildroot}%{_mandir}/man1/pdf*
@@ -259,26 +278,3 @@ for i in fofi goo splash; do
     install -m0644 $i/*.h %{buildroot}%{_includedir}/%{name}/$i/
 done
 
-rm -fr %buildroot%{_libdir}/*.*a
-
-%files -n %{libname}
-%doc CHANGES README
-%{_libdir}/libxpdf.so.%{major}*
-
-%files -n %{develname}
-%{_includedir}/%{name}
-%{_libdir}/*.so
-
-%files
-%{_bindir}/xpdf
-%{_mandir}/man1/xpdf.1*
-%{_datadir}/applications/%_real_vendor-%{name}.desktop
-%{_iconsdir}/*.*
-%{_liconsdir}/*.*
-%{_miconsdir}/*.*
-
-%files common
-%defattr(-,root,root)
-%{_datadir}/%{name}
-%{_mandir}/man5/*
-%config(noreplace) %{_sysconfdir}/xpdfrc
