@@ -13,7 +13,7 @@
 Summary:	A PDF file viewer for the X Window System
 Name:		xpdf
 Version:	3.03
-Release:	2
+Release:	3
 License:	GPLv2+
 Group:		Publishing
 Url:		http://www.foolabs.com/xpdf/
