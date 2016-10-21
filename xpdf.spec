@@ -3,10 +3,10 @@
 %define devname %mklibname xpdf -d
 
 %define urwdir %{_datadir}/fonts/default/Type1
-%define lesstifver 0.93.41
+%define lesstifver 0.95.2
 %define freetypever 2.1.5
 %define x11dir /usr/X11R6
-%define build_lesstif 0
+%define build_lesstif 1
 %define build_freetype2 0
 %define usefreetype2 1
 
@@ -29,7 +29,7 @@ Source8:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-greek.tar.bz2
 Source9:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-latin2.tar.bz2
 Source10:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-turkish.tar.bz2
 Source11:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-hebrew.tar.bz2
-Source12:	ftp://ftp.hungry.com/pub/hungry/lesstif/srcdist/lesstif-%{lesstifver}.tar.bz2
+Source12:	http://downloads.sourceforge.net/project/lesstif/lesstif/0.95.2/lesstif-%{lesstifver}.tar.bz2
 Source13:	ftp://ftp.freetype.org/freetype/freetype2/freetype-%{freetypever}.tar.bz2
 Source14:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-arabic.tar.bz2
 #Source100:	xpdf.rpmlintrc
@@ -56,7 +56,7 @@ BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(fontconfig)
 BuildRequires:	pkgconfig(xrender)
 BuildRequires:	pkgconfig(xft)
-BuildConflicts:	libpaper-devel
+BuildRequires:	libxm4
 BuildRequires:	libtool
 %if %{build_lesstif}
 BuildConflicts:	lesstif-devel
@@ -195,7 +195,7 @@ make install DESTDIR=$CURRENTDIR/freetype2-local \
 %endif
 
 # build xpdf
-export X_EXTRA_LIBS="-lXft -lXrender -lfontconfig -lz -lfreetype"
+export X_EXTRA_LIBS="-lXft -lXrender -lfontconfig -lz -lfreetype -lXm"
 %configure2_5x \
 	--bindir=%{_bindir} \
 	--mandir=%{_mandir} \
@@ -211,6 +211,8 @@ export X_EXTRA_LIBS="-lXft -lXrender -lfontconfig -lz -lfreetype"
 	--with-freetype2-includes=%{_includedir}/freetype2 \
 %endif
 	--enable-opi
+
+sed -i -e s/all.no.x/all/ $CURRENTDIR/Makefile
 
 %make
 
