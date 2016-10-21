@@ -56,7 +56,7 @@ BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(fontconfig)
 BuildRequires:	pkgconfig(xrender)
 BuildRequires:	pkgconfig(xft)
-BuildRequires:	libxm4
+BuildRequires:	motif-devel
 BuildRequires:	libtool
 %if %{build_lesstif}
 BuildConflicts:	lesstif-devel
