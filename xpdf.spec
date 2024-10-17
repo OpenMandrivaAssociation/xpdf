@@ -16,7 +16,7 @@ Version:	3.03
 Release:	3
 License:	GPLv2+
 Group:		Publishing
-Url:		http://www.foolabs.com/xpdf/
+Url:		https://www.foolabs.com/xpdf/
 Source0:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-%{version}.tar.bz2
 Source1:	icons-%{name}.tar.bz2
 Source2:	ftp://ftp.foolabs.com/pub/xpdf/%{name}-chinese-simplified.tar.bz2
