@@ -48,6 +48,11 @@ Patch20:	%{name}-3.03-crash.patch
 Patch21:	%{name}-3.01-xfont.patch
 Patch27:	%{name}-3.03-strcast.patch
 Patch28:	%{name}-3.03-fix-makefile.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xt)
 BuildRequires:	pkgconfig(xpm)
